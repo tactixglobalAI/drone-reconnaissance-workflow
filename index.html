@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Reconnaissance Workflow - Mobile Optimized</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(ellipse at center, #001122 0%, #000000 70%), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.3"/><circle cx="150" cy="80" r="0.5" fill="%23ffffff" opacity="0.4"/><circle cx="30" cy="120" r="1.5" fill="%23ffffff" opacity="0.2"/><circle cx="170" cy="40" r="0.8" fill="%23ffffff" opacity="0.5"/><circle cx="90" cy="160" r="1.2" fill="%23ffffff" opacity="0.3"/><circle cx="180" cy="130" r="0.6" fill="%23ffffff" opacity="0.4"/></svg>');
+            font-family: 'Segoe UI', 'Roboto', 'Inter', 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 500px;
+            height: 100vh;
+            max-height: 900px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.15);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #00FFFF;
+            width: 100%;
+        }
+
+        .title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #00FFFF;
+            text-shadow: 0 0 10px #00FFFF;
+            margin-bottom: 3px;
+            letter-spacing: 0.8px;
+        }
+
+        .subtitle {
+            font-size: 11px;
+            color: #FFFFFF;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        .progress-container {
+            width: 100%;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 3px;
+            background: rgba(0, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00FFFF, #FFFFFF, #00FFFF);
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+
+        .stage-indicator {
+            font-size: 10px;
+            color: #FFFFFF;
+            opacity: 0.9;
+            text-align: center;
+            margin-top: 6px;
+            font-weight: 500;
+            line-height: 1.3;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pipeline-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            flex: 1;
+            width: 100%;
+            min-height: 0;
+            padding-top: 5px;
+            position: relative;
+        }
+
+        .pipeline-container > * {
+            flex-shrink: 0;
+            width: 300px;
+        }
+
+        /* Central Spine */
+        .central-spine {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, 
+                transparent 0%, 
+                rgba(0, 255, 255, 0.3) 10%, 
+                rgba(0, 255, 255, 0.6) 50%, 
+                rgba(0, 255, 255, 0.3) 90%, 
+                transparent 100%
+            );
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            z-index: 0;
+        }
+
+        .spine-pulse {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, rgba(0, 255, 255, 1) 0%, transparent 70%);
+            border-radius: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: spineFlow 3s linear infinite;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+        }
+
+        @keyframes spineFlow {
+            0% { 
+                top: -10px; 
+                opacity: 0;
+                transform: translateX(-50%) scale(0.5);
+            }
+            10% { 
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+            90% { 
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+            100% { 
+                top: calc(100% + 10px); 
+                opacity: 0;
+                transform: translateX(-50%) scale(0.5);
+            }
+        }
+
+        .data-flow-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .data-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #00FFFF;
+            border-radius: 50%;
+            opacity: 0;
+            animation: dataFlow 3s linear infinite;
+            box-shadow: 0 0 5px #00FFFF;
+        }
+
+        @keyframes dataFlow {
+            0% { opacity: 0; transform: translateY(0); }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(500px); }
+        }
+
+        .pipeline-block {
+            width: 300px;
+            height: 55px;
+            border-radius: 10px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            margin: 4px 0;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.8s ease-out;
+            border: 2px solid;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+            z-index: 1;
+        }
+
+        .pipeline-block.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .pipeline-block::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 10px;
+            background: linear-gradient(45deg, var(--glow-color), transparent, var(--glow-color));
+            z-index: -1;
+            opacity: 0.3;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .block-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .block-text {
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: var(--text-color);
+            text-shadow: 0 0 6px var(--glow-color);
+            line-height: 1.2;
+        }
+
+        .block-icon {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--glow-color);
+            filter: drop-shadow(0 0 5px var(--glow-color));
+        }
+
+        /* Unified Tron theme colors */
+        .nlp, .cv, .fusion, .edge, .mesh, .report, .genai {
+            --glow-color: #00FFFF;
+            --text-color: #00FFFF;
+            border-color: #00FFFF;
+        }
+
+        /* Icon accent colors remain unique */
+        .nlp .block-icon svg * { stroke: #FF00FF !important; fill: #FF00FF !important; }
+        .cv .block-icon svg * { stroke: #FFFF00 !important; fill: #FFFF00 !important; }
+        .fusion .block-icon svg * { stroke: #00FFFF !important; fill: #00FFFF !important; }
+        .edge .block-icon svg * { stroke: #0080FF !important; fill: #0080FF !important; }
+        .mesh .block-icon svg * { stroke: #00FF80 !important; fill: #00FF80 !important; }
+        .report .block-icon svg * { stroke: #FFC800 !important; fill: #FFC800 !important; }
+        .genai .block-icon svg * { stroke: #FF8000 !important; fill: #FF8000 !important; }
+
+        /* Arrows */
+        .arrow {
+            width: 3px;
+            height: 12px;
+            background: linear-gradient(180deg, transparent, #00FFFF, transparent);
+            margin: 2px auto;
+            position: relative;
+            opacity: 0;
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: all 0.5s ease-out;
+            z-index: 1;
+        }
+
+        .arrow.visible {
+            opacity: 1;
+            transform: scaleY(1);
+        }
+
+        .arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 3px solid transparent;
+            border-right: 3px solid transparent;
+            border-top: 6px solid #00FFFF;
+            filter: drop-shadow(0 0 2px #00FFFF);
+        }
+
+        /* Final animation effects */
+        .final-glow {
+            animation: finalPulse 1s ease-in-out;
+        }
+
+        .arrow-pulse {
+            animation: arrowPulse 1s ease-in-out;
+        }
+
+        @keyframes finalPulse {
+            0%, 100% { filter: drop-shadow(0 0 10px var(--glow-color)); }
+            50% { filter: drop-shadow(0 0 25px var(--glow-color)); }
+        }
+
+        @keyframes arrowPulse {
+            0% { background: linear-gradient(180deg, transparent, #00FFFF, transparent); }
+            50% { background: linear-gradient(180deg, #00FFFF, #FFFFFF, #00FFFF); }
+            100% { background: linear-gradient(180deg, transparent, #00FFFF, transparent); }
+        }
+
+        .footer {
+            margin-top: 8px;
+            text-align: center;
+            font-size: 9px;
+            color: #FFFFFF;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">DRONE RECONNAISSANCE WORKFLOW</div>
+            <div class="subtitle">Eagle-1 Aerial Threat Assessment - Autonomous Mission</div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <div class="stage-indicator" id="stageIndicator">Natural Language Processing - Voice Command</div>
+        </div>
+        
+        <div class="pipeline-container">
+            <div class="central-spine" id="centralSpine"></div>
+            <div class="data-flow-lines" id="dataFlow"></div>
+
+            <!-- Driver Voice Command Block -->
+            <div class="pipeline-block nlp" id="block1">
+                <div class="block-content">
+                    <div class="block-text">Driver: "Eagle-1, Scan Sector Ahead"</div>
+                    <div class="block-icon">
+                        <svg width="35" height="35" viewBox="0 0 35 35">
+                            <rect x="15" y="7" width="5" height="12" rx="2.5" fill="none" stroke="#FF00FF" stroke-width="1.2"/>
+                            <rect x="15" y="7" width="5" height="12" rx="2.5" fill="#FF00FF" opacity="0.3"/>
+                            <path d="M 11 16 C 11 19 14 22 17.5 22 C 21 22 24 19 24 16" stroke="#FF00FF" stroke-width="1.2" fill="none"/>
+                            <line x1="17.5" y1="22" x2="17.5" y2="26" stroke="#FF00FF" stroke-width="1.2"/>
+                            <line x1="14" y1="26" x2="21" y2="26" stroke="#FF00FF" stroke-width="1.5"/>
+                            <path d="M 9 12 Q 10.5 14 9 16" stroke="#FF00FF" stroke-width="0.8" fill="none" opacity="0.6"/>
+                            <path d="M 26 12 Q 24.5 14 26 16" stroke="#FF00FF" stroke-width="0.8" fill="none" opacity="0.6"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow" id="arrow1"></div>
+
+            <!-- Drone Launch Block -->
+            <div class="pipeline-block cv" id="block2">
+                <div class="block-content">
+                    <div class="block-text">Drone Launch from Vehicle Sequence</div>
+                    <div class="block-icon">
+                        <svg width="35" height="35" viewBox="0 0 35 35">
+                            <circle cx="17.5" cy="17.5" r="3" fill="#FFFF00" stroke="#FFFF00" stroke-width="0.8"/>
+                            <line x1="8" y1="8" x2="14" y2="14" stroke="#FFFF00" stroke-width="1.5"/>
+                            <line x1="27" y1="8" x2="21" y2="14" stroke="#FFFF00" stroke-width="1.5"/>
+                            <line x1="8" y1="27" x2="14" y2="21" stroke="#FFFF00" stroke-width="1.5"/>
+                            <line x1="27" y1="27" x2="21" y2="21" stroke="#FFFF00" stroke-width="1.5"/>
+                            <circle cx="8" cy="8" r="2.5" fill="none" stroke="#FFFF00" stroke-width="0.8"/>
+                            <circle cx="27" cy="8" r="2.5" fill="none" stroke="#FFFF00" stroke-width="0.8"/>
+                            <circle cx="8" cy="27" r="2.5" fill="none" stroke="#FFFF00" stroke-width="0.8"/>
+                            <circle cx="27" cy="27" r="2.5" fill="none" stroke="#FFFF00" stroke-width="0.8"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow" id="arrow2"></div>
+
+            <!-- Drone Flight Block -->
+            <div class="pipeline-block fusion" id="block3">
+                <div class="block-content">
+                    <div class="block-text">Drone Flies to Target Area</div>
+                    <div class="block-icon">
+                        <svg width="35" height="35" viewBox="0 0 35 35">
+                            <circle cx="17.5" cy="17.5" r="2.5" fill="#00FFFF" stroke="#00FFFF" stroke-width="0.8"/>
+                            <line x1="9" y1="9" x2="14" y2="14" stroke="#00FFFF" stroke-width="1.2"/>
+                            <line x1="26" y1="9" x2="21" y2="14" stroke="#00FFFF" stroke-width="1.2"/>
+                            <line x1="9" y1="26" x2="14" y2="21" stroke="#00FFFF" stroke-width="1.2"/>
+                            <line x1="26" y1="26" x2="21" y2="21" stroke="#00FFFF" stroke-width="1.2"/>
+                            <path d="M 5 17.5 Q 17.5 10 30 17.5" stroke="#00FFFF" stroke-width="0.8" fill="none" opacity="0.6" stroke-dasharray="2,2"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow" id="arrow3"></div>
+
+            <!-- Aerial Scan Block -->
+            <div class="pipeline-block edge" id="block4">
+                <div class="block-content">
+                    <div class="block-text">Aerial Reconnaissance Scan</div>
+                    <div class="block-icon">
+                        <svg width="35" height="35" viewBox="0 0 35 35">
+                            <circle cx="17.5" cy="12" r="2.5" fill="#0080FF" stroke="#0080FF" stroke-width="0.8"/>
+                            <circle cx="17.5" cy="17.5" r="4" fill="none" stroke="#0080FF" stroke-width="1.2"/>
+                            <path d="M 17.5 21.5 L 8 30" stroke="#0080FF" stroke-width="1" opacity="0.6"/>
+                            <path d="M 17.5 21.5 L 27 30" stroke="#0080FF" stroke-width="1" opacity="0.6"/>
+                            <path d="M 17.5 21.5 L 17.5 30" stroke="#0080FF" stroke-width="1" opacity="0.8"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow" id="arrow4"></div>
+
+            <!-- Threat Assessment Block -->
+            <div class="pipeline-block mesh" id="block5">
+                <div class="block-content">
+                    <div class="block-text">Threat Assessment Complete</div>
+                    <div class="block-icon">
+                        <svg width="35" height="35" viewBox="0 0 35 35">
+                            <rect x="10.5" y="10.5" width="14" height="14" rx="2" fill="none" stroke="#00FF80" stroke-width="1.2"/>
+                            <path d="M 13 17.5 L 16 20.5 L 22 14.5" stroke="#00FF80" stroke-width="2" fill="none"/>
+                            <circle cx="22" cy="12" r="1.5" fill="#00FF80"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow" id="arrow5"></div>
+
+            <!-- Drone Return Block -->
+            <div class="pipeline-block report" id="block6">
+                <div class="block-content">
+                    <div class="block-text">Drone Return to Vehicle: No Threats</div>
+                    <div class="block-icon">
+                        <svg width="35" height="35" viewBox="0 0 35 35">
+                            <circle cx="17.5" cy="17.5" r="2.5" fill="#FFC800" stroke="#FFC800" stroke-width="0.8"/>
+                            <line x1="10" y1="10" x2="15" y2="15" stroke="#FFC800" stroke-width="1.2"/>
+                            <line x1="25" y1="10" x2="20" y2="15" stroke="#FFC800" stroke-width="1.2"/>
+                            <line x1="10" y1="25" x2="15" y2="20" stroke="#FFC800" stroke-width="1.2"/>
+                            <line x1="25" y1="25" x2="20" y2="20" stroke="#FFC800" stroke-width="1.2"/>
+                            <path d="M 30 17.5 Q 17.5 10 5 17.5" stroke="#FFC800" stroke-width="1" fill="none" opacity="0.8"/>
+                            <path d="M 8 15 L 5 17.5 L 8 20" stroke="#FFC800" stroke-width="1" fill="none"/>
+                            <text x="17.5" y="30" fill="#FFC800" font-size="2.5" opacity="0.9" text-anchor="middle">CLEAR</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow" id="arrow6"></div>
+
+            <!-- GenAI Report Block -->
+            <div class="pipeline-block genai" id="block7">
+                <div class="block-content">
+                    <div class="block-text">GenAI Report Ready</div>
+                    <div class="block-icon">
+                        <svg width="35" height="35" viewBox="0 0 35 35">
+                            <rect x="10.5" y="7" width="17.5" height="21" rx="1.5" fill="none" stroke="#FF8000" stroke-width="1.2"/>
+                            <rect x="13" y="10.5" width="7" height="1.5" fill="#FF8000"/>
+                            <rect x="13" y="14" width="10.5" height="0.8" fill="#FF8000" opacity="0.8"/>
+                            <rect x="13" y="16.5" width="8.5" height="0.8" fill="#FF8000" opacity="0.8"/>
+                            <circle cx="22.5" cy="15.5" r="3.5" fill="none" stroke="#FF8000" stroke-width="0.8"/>
+                            <circle cx="21.8" cy="14.5" r="0.4" fill="#FF8000"/>
+                            <circle cx="23.2" cy="14.5" r="0.4" fill="#FF8000"/>
+                            <circle cx="21.8" cy="16.5" r="0.4" fill="#FF8000"/>
+                            <circle cx="23.2" cy="16.5" r="0.4" fill="#FF8000"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            © 2025 AI Security Systems | Drone Reconnaissance Workflow
+        </div>
+    </div>
+
+    <script>
+        let animationRunning = false;
+        let autoRestartTimeout;
+        
+        const stageDescriptions = [
+            "Natural Language Processing - Voice Command",
+            "Flight Control - Launch Sequence", 
+            "Navigation AI - Route Planning",
+            "Computer Vision - Aerial Scanning",
+            "Edge AI - Threat Analysis",
+            "Return Navigation - Auto-Return",
+            "Mission AI - Status Report"
+        ];
+
+        function updateProgress(stage, progress) {
+            const progressBar = document.getElementById('progressBar');
+            const stageIndicator = document.getElementById('stageIndicator');
+            
+            progressBar.style.width = progress + '%';
+            stageIndicator.textContent = stageDescriptions[stage];
+        }
+
+        function createDataParticle() {
+            const dataFlow = document.getElementById('dataFlow');
+            const particle = document.createElement('div');
+            particle.className = 'data-particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 2 + 's';
+            dataFlow.appendChild(particle);
+            
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, 3000);
+        }
+
+        function createSpinePulse() {
+            const spine = document.getElementById('centralSpine');
+            const pulse = document.createElement('div');
+            pulse.className = 'spine-pulse';
+            pulse.style.animationDelay = Math.random() * 1 + 's';
+            spine.appendChild(pulse);
+            
+            setTimeout(() => {
+                if (pulse.parentNode) {
+                    pulse.parentNode.removeChild(pulse);
+                }
+            }, 3000);
+        }
+
+        function startDataFlow() {
+            const particleInterval = setInterval(createDataParticle, 300);
+            const spineInterval = setInterval(createSpinePulse, 500);
+            return { particleInterval, spineInterval };
+        }
+
+        function startAnimation() {
+            if (animationRunning) return;
+            animationRunning = true;
+
+            if (autoRestartTimeout) {
+                clearTimeout(autoRestartTimeout);
+            }
+
+            document.querySelectorAll('.pipeline-block').forEach(block => {
+                block.classList.remove('visible', 'final-glow');
+            });
+            document.querySelectorAll('.arrow').forEach(arrow => {
+                arrow.classList.remove('visible', 'arrow-pulse');
+            });
+
+            updateProgress(0, 0);
+            const dataFlowIntervals = startDataFlow();
+
+            setTimeout(() => {
+                document.getElementById('block1').classList.add('visible');
+                updateProgress(0, 10);
+            }, 0);
+            
+            setTimeout(() => {
+                document.getElementById('arrow1').classList.add('visible');
+                updateProgress(0, 15);
+            }, 1500);
+            
+            setTimeout(() => {
+                document.getElementById('block2').classList.add('visible');
+                updateProgress(1, 25);
+            }, 2500);
+            
+            setTimeout(() => {
+                document.getElementById('arrow2').classList.add('visible');
+                updateProgress(1, 30);
+            }, 4000);
+            
+            setTimeout(() => {
+                document.getElementById('block3').classList.add('visible');
+                updateProgress(2, 40);
+            }, 4500);
+            
+            setTimeout(() => {
+                document.getElementById('arrow3').classList.add('visible');
+                updateProgress(2, 45);
+            }, 6000);
+            
+            setTimeout(() => {
+                document.getElementById('block4').classList.add('visible');
+                updateProgress(3, 55);
+            }, 6500);
+            
+            setTimeout(() => {
+                document.getElementById('arrow4').classList.add('visible');
+                updateProgress(3, 60);
+            }, 8000);
+            
+            setTimeout(() => {
+                document.getElementById('block5').classList.add('visible');
+                updateProgress(4, 70);
+            }, 8500);
+            
+            setTimeout(() => {
+                document.getElementById('arrow5').classList.add('visible');
+                updateProgress(4, 75);
+            }, 10000);
+            
+            setTimeout(() => {
+                document.getElementById('block6').classList.add('visible');
+                updateProgress(5, 85);
+            }, 10500);
+            
+            setTimeout(() => {
+                document.getElementById('arrow6').classList.add('visible');
+                updateProgress(5, 90);
+            }, 12000);
+
+            setTimeout(() => {
+                document.getElementById('block7').classList.add('visible');
+                updateProgress(6, 100);
+            }, 12500);
+
+            setTimeout(() => {
+                document.querySelectorAll('.pipeline-block').forEach(block => {
+                    block.classList.add('final-glow');
+                });
+                document.querySelectorAll('.arrow').forEach(arrow => {
+                    arrow.classList.add('arrow-pulse');
+                });
+                
+                setTimeout(() => {
+                    animationRunning = false;
+                    clearInterval(dataFlowIntervals.particleInterval);
+                    clearInterval(dataFlowIntervals.spineInterval);
+                    
+                    autoRestartTimeout = setTimeout(() => {
+                        startAnimation();
+                    }, 5000);
+                }, 2000);
+            }, 14000);
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(startAnimation, 500);
+        });
+    </script>
+</body>
+</html>
