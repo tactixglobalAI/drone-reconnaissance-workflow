@@ -18,6 +18,7 @@
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
+            scroll-behavior: smooth;
         }
 
         body::before {
@@ -48,68 +49,34 @@
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
+            padding-bottom: 80px;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             background: rgba(0, 0, 0, 0.4);
-            padding: 20px;
-            border-radius: 12px;
+            padding: 15px;
+            border-radius: 10px;
             border: 1px solid rgba(0, 255, 255, 0.3);
             backdrop-filter: blur(10px);
         }
 
         .title {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: bold;
             color: #00FFFF;
             text-shadow: 0 0 10px #00FFFF;
-            margin-bottom: 8px;
-            letter-spacing: 2px;
+            margin-bottom: 6px;
+            letter-spacing: 1.5px;
         }
 
         .subtitle {
-            font-size: 14px;
+            font-size: 12px;
             color: #FFFFFF;
             opacity: 0.8;
-            letter-spacing: 1px;
-        }
-
-        .progress-container {
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 10px;
-            border: 1px solid rgba(0, 255, 255, 0.3);
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00FFFF, #FF00FF, #00FFFF);
-            width: 0%;
-            transition: width 2s ease-in-out;
-            animation: progressGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes progressGlow {
-            0% { box-shadow: 0 0 5px #00FFFF; }
-            100% { box-shadow: 0 0 15px #FF00FF; }
-        }
-
-        .stage-indicator {
-            font-size: 12px;
-            color: #00FFFF;
-            font-weight: bold;
-            opacity: 0.9;
+            letter-spacing: 0.8px;
         }
 
         .pipeline-container {
@@ -117,7 +84,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 8px;
         }
 
         .data-flow-lines {
@@ -146,12 +113,12 @@
         }
 
         .pipeline-block {
-            width: 380px;
-            min-height: 90px;
+            width: 280px;
+            min-height: 65px;
             background: rgba(0, 0, 0, 0.6);
             border: 2px solid;
-            border-radius: 12px;
-            padding: 15px;
+            border-radius: 10px;
+            padding: 12px;
             position: relative;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
@@ -173,38 +140,38 @@
         }
 
         .voice-command { 
-            border-color: #FF00FF; 
-            --glow-color: #FF00FF;
+            border-color: #00AAFF; 
+            --glow-color: #00AAFF;
         }
 
         .drone-launch { 
-            border-color: #00FF00; 
-            --glow-color: #00FF00;
+            border-color: #00AAFF; 
+            --glow-color: #00AAFF;
         }
 
         .flight-nav { 
-            border-color: #FFFF00; 
-            --glow-color: #FFFF00;
+            border-color: #00AAFF; 
+            --glow-color: #00AAFF;
         }
 
         .aerial-recon { 
-            border-color: #FF6600; 
-            --glow-color: #FF6600;
+            border-color: #00AAFF; 
+            --glow-color: #00AAFF;
         }
 
         .threat-assess { 
-            border-color: #FF0000; 
-            --glow-color: #FF0000;
+            border-color: #00DD88; 
+            --glow-color: #00DD88;
         }
 
         .return-flight { 
-            border-color: #00FFFF; 
-            --glow-color: #00FFFF;
+            border-color: #00AAFF; 
+            --glow-color: #00AAFF;
         }
 
         .voice-report { 
-            border-color: #9900FF; 
-            --glow-color: #9900FF;
+            border-color: #00AAFF; 
+            --glow-color: #00AAFF;
         }
 
         .pipeline-block.active {
@@ -220,13 +187,13 @@
         .block-content {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .block-icon {
             flex-shrink: 0;
-            width: 45px;
-            height: 45px;
+            width: 35px;
+            height: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -234,15 +201,15 @@
 
         .block-text {
             flex: 1;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: bold;
-            line-height: 1.3;
+            line-height: 1.2;
         }
 
         .connection-arrow {
             width: 3px;
-            height: 25px;
-            margin: 5px auto;
+            height: 15px;
+            margin: 3px auto;
             background: linear-gradient(180deg, transparent, #00FFFF, transparent);
             border-radius: 2px;
             opacity: 0;
@@ -266,20 +233,24 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             border-top: 1px solid rgba(0, 255, 255, 0.3);
-            padding: 8px 20px;
-            font-size: 11px;
+            padding: 8px 15px;
+            font-size: 9px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            max-height: 60px;
+            overflow: hidden;
         }
 
         .ai-systems {
             display: flex;
-            gap: 15px;
+            gap: 8px;
             flex-wrap: wrap;
+            flex: 1;
         }
 
         .ai-item {
@@ -293,11 +264,12 @@
         }
 
         .footer {
-            margin-top: 20px;
+            margin-top: 15px;
             text-align: center;
-            font-size: 10px;
+            font-size: 9px;
             color: #FFFFFF;
             opacity: 0.5;
+            margin-bottom: 20px;
         }
 
         .drone-icon {
@@ -318,6 +290,47 @@
             50% { opacity: 1; }
             100% { opacity: 0.3; }
         }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+                padding-bottom: 80px;
+            }
+            
+            .pipeline-block {
+                width: 90vw;
+                max-width: 280px;
+                min-height: 60px;
+                padding: 10px;
+            }
+            
+            .title {
+                font-size: 18px;
+            }
+            
+            .subtitle {
+                font-size: 11px;
+            }
+            
+            .block-text {
+                font-size: 11px;
+            }
+            
+            .block-icon {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .ai-systems {
+                gap: 6px;
+            }
+            
+            .status-bar {
+                font-size: 8px;
+                padding: 6px 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -336,18 +349,16 @@
                     <div class="block-text">Driver: "Eagle-1, Scan Sector Ahead"<br><span style="color:#00FFFF; font-size:12px;">Eagle-1: "Copy, launching"</span></div>
                     <div class="block-icon">
                         <svg width="40" height="40" viewBox="0 0 40 40">
-                            <!-- Microphone with sound waves -->
-                            <rect x="17" y="8" width="6" height="14" rx="3" fill="none" stroke="#FF00FF" stroke-width="1.5"/>
-                            <rect x="17" y="8" width="6" height="14" rx="3" fill="#FF00FF" opacity="0.3"/>
-                            <path d="M 12 18 C 12 22 16 26 20 26 C 24 26 28 22 28 18" stroke="#FF00FF" stroke-width="1.5" fill="none"/>
-                            <line x1="20" y1="26" x2="20" y2="30" stroke="#FF00FF" stroke-width="1.5"/>
-                            <line x1="16" y1="30" x2="24" y2="30" stroke="#FF00FF" stroke-width="2"/>
-                            <!-- Animated sound waves -->
+                            <rect x="17" y="8" width="6" height="14" rx="3" fill="none" stroke="#00AAFF" stroke-width="1.5"/>
+                            <rect x="17" y="8" width="6" height="14" rx="3" fill="#00AAFF" opacity="0.3"/>
+                            <path d="M 12 18 C 12 22 16 26 20 26 C 24 26 28 22 28 18" stroke="#00AAFF" stroke-width="1.5" fill="none"/>
+                            <line x1="20" y1="26" x2="20" y2="30" stroke="#00AAFF" stroke-width="1.5"/>
+                            <line x1="16" y1="30" x2="24" y2="30" stroke="#00AAFF" stroke-width="2"/>
                             <g opacity="0.7">
-                                <path d="M 9 14 Q 11 18 9 22" stroke="#FF00FF" stroke-width="1" fill="none">
+                                <path d="M 9 14 Q 11 18 9 22" stroke="#00AAFF" stroke-width="1" fill="none">
                                     <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
                                 </path>
-                                <path d="M 31 14 Q 29 18 31 22" stroke="#FF00FF" stroke-width="1" fill="none">
+                                <path d="M 31 14 Q 29 18 31 22" stroke="#00AAFF" stroke-width="1" fill="none">
                                     <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" begin="0.5s"/>
                                 </path>
                             </g>
@@ -361,27 +372,24 @@
             <!-- Drone Launch Block -->
             <div class="pipeline-block drone-launch" id="block2">
                 <div class="block-content">
-                    <div class="block-text">Eagle-1: "Takeoff sequence, departing vehicle"<br><span style="color:#FF00FF; font-size:12px;">In-Vehicle Display: Takeoff camera view</span></div>
+                    <div class="block-text">Eagle-1: "Takeoff sequence, departing vehicle"<br><span style="color:#00AAFF; font-size:12px;">In-Vehicle Display: Takeoff camera view</span></div>
                     <div class="block-icon">
                         <svg width="40" height="40" viewBox="0 0 40 40" class="drone-icon">
-                            <!-- Drone body -->
-                            <ellipse cx="20" cy="20" rx="8" ry="4" fill="none" stroke="#00FF00" stroke-width="1.5"/>
-                            <ellipse cx="20" cy="20" rx="8" ry="4" fill="#00FF00" opacity="0.2"/>
-                            <!-- Propellers -->
-                            <circle cx="12" cy="15" r="3" fill="none" stroke="#00FF00" stroke-width="1">
+                            <ellipse cx="20" cy="20" rx="8" ry="4" fill="none" stroke="#00AAFF" stroke-width="1.5"/>
+                            <ellipse cx="20" cy="20" rx="8" ry="4" fill="#00AAFF" opacity="0.2"/>
+                            <circle cx="12" cy="15" r="3" fill="none" stroke="#00AAFF" stroke-width="1">
                                 <animateTransform attributeName="transform" type="rotate" values="0 12 15;360 12 15" dur="0.5s" repeatCount="indefinite"/>
                             </circle>
-                            <circle cx="28" cy="15" r="3" fill="none" stroke="#00FF00" stroke-width="1">
+                            <circle cx="28" cy="15" r="3" fill="none" stroke="#00AAFF" stroke-width="1">
                                 <animateTransform attributeName="transform" type="rotate" values="0 28 15;-360 28 15" dur="0.5s" repeatCount="indefinite"/>
                             </circle>
-                            <circle cx="12" cy="25" r="3" fill="none" stroke="#00FF00" stroke-width="1">
+                            <circle cx="12" cy="25" r="3" fill="none" stroke="#00AAFF" stroke-width="1">
                                 <animateTransform attributeName="transform" type="rotate" values="0 12 25;360 12 25" dur="0.5s" repeatCount="indefinite"/>
                             </circle>
-                            <circle cx="28" cy="25" r="3" fill="none" stroke="#00FF00" stroke-width="1">
+                            <circle cx="28" cy="25" r="3" fill="none" stroke="#00AAFF" stroke-width="1">
                                 <animateTransform attributeName="transform" type="rotate" values="0 28 25;-360 28 25" dur="0.5s" repeatCount="indefinite"/>
                             </circle>
-                            <!-- Launch effect -->
-                            <path d="M 20 25 L 18 32 L 20 30 L 22 32 Z" fill="#00FF00" opacity="0.5">
+                            <path d="M 20 25 L 18 32 L 20 30 L 22 32 Z" fill="#00AAFF" opacity="0.5">
                                 <animate attributeName="opacity" values="0;1;0" dur="1s" repeatCount="indefinite"/>
                             </path>
                         </svg>
@@ -394,19 +402,17 @@
             <!-- Flight Navigation Block -->
             <div class="pipeline-block flight-nav" id="block3">
                 <div class="block-content">
-                    <div class="block-text">Eagle-1: "Enroute to sector"<br><span style="color:#FF00FF; font-size:12px;">In-Vehicle Display: Aerial flight view streaming</span></div>
+                    <div class="block-text">Eagle-1: "Enroute to sector"<br><span style="color:#00AAFF; font-size:12px;">In-Vehicle Display: Aerial flight view streaming</span></div>
                     <div class="block-icon">
                         <svg width="40" height="40" viewBox="0 0 40 40">
-                            <!-- Flight path -->
-                            <path d="M 5 30 Q 15 10 25 20 Q 30 25 35 15" stroke="#FFFF00" stroke-width="2" fill="none" stroke-dasharray="3,2" class="flight-path"/>
-                            <!-- Moving drone -->
+                            <path d="M 5 30 Q 15 10 25 20 Q 30 25 35 15" stroke="#00AAFF" stroke-width="2" fill="none" stroke-dasharray="3,2" class="flight-path"/>
                             <g>
                                 <animateTransform attributeName="transform" type="translate" values="5,30;15,18;25,20;35,15" dur="3s" repeatCount="indefinite"/>
-                                <circle cx="0" cy="0" r="2" fill="#FFFF00"/>
-                                <circle cx="-2" cy="-2" r="1" fill="none" stroke="#FFFF00" stroke-width="0.5"/>
-                                <circle cx="2" cy="-2" r="1" fill="none" stroke="#FFFF00" stroke-width="0.5"/>
-                                <circle cx="-2" cy="2" r="1" fill="none" stroke="#FFFF00" stroke-width="0.5"/>
-                                <circle cx="2" cy="2" r="1" fill="none" stroke="#FFFF00" stroke-width="0.5"/>
+                                <circle cx="0" cy="0" r="2" fill="#00AAFF"/>
+                                <circle cx="-2" cy="-2" r="1" fill="none" stroke="#00AAFF" stroke-width="0.5"/>
+                                <circle cx="2" cy="-2" r="1" fill="none" stroke="#00AAFF" stroke-width="0.5"/>
+                                <circle cx="-2" cy="2" r="1" fill="none" stroke="#00AAFF" stroke-width="0.5"/>
+                                <circle cx="2" cy="2" r="1" fill="none" stroke="#00AAFF" stroke-width="0.5"/>
                             </g>
                         </svg>
                     </div>
@@ -418,22 +424,20 @@
             <!-- Aerial Reconnaissance Block -->
             <div class="pipeline-block aerial-recon" id="block4">
                 <div class="block-content">
-                    <div class="block-text">Eagle-1: "Beginning scan"<br><span style="color:#FF00FF; font-size:12px;">In-Vehicle Display: Live reconnaissance camera</span></div>
+                    <div class="block-text">Eagle-1: "Beginning scan"<br><span style="color:#00AAFF; font-size:12px;">In-Vehicle Display: Live reconnaissance camera</span></div>
                     <div class="block-icon">
                         <svg width="40" height="40" viewBox="0 0 40 40">
-                            <!-- Camera/scanner -->
-                            <rect x="15" y="15" width="10" height="8" rx="2" fill="none" stroke="#FF6600" stroke-width="1.5"/>
-                            <rect x="15" y="15" width="10" height="8" rx="2" fill="#FF6600" opacity="0.2"/>
-                            <circle cx="20" cy="19" r="3" fill="none" stroke="#FF6600" stroke-width="1.5"/>
-                            <!-- Scanning beams -->
+                            <rect x="15" y="15" width="10" height="8" rx="2" fill="none" stroke="#00AAFF" stroke-width="1.5"/>
+                            <rect x="15" y="15" width="10" height="8" rx="2" fill="#00AAFF" opacity="0.2"/>
+                            <circle cx="20" cy="19" r="3" fill="none" stroke="#00AAFF" stroke-width="1.5"/>
                             <g opacity="0.7">
-                                <path d="M 20 23 L 10 35 L 30 35 Z" fill="none" stroke="#FF6600" stroke-width="1" opacity="0.4">
+                                <path d="M 20 23 L 10 35 L 30 35 Z" fill="none" stroke="#00AAFF" stroke-width="1" opacity="0.4">
                                     <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite"/>
                                 </path>
-                                <line x1="20" y1="23" x2="12" y2="33" stroke="#FF6600" stroke-width="0.5">
+                                <line x1="20" y1="23" x2="12" y2="33" stroke="#00AAFF" stroke-width="0.5">
                                     <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" begin="0.5s"/>
                                 </line>
-                                <line x1="20" y1="23" x2="28" y2="33" stroke="#FF6600" stroke-width="0.5">
+                                <line x1="20" y1="23" x2="28" y2="33" stroke="#00AAFF" stroke-width="0.5">
                                     <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" begin="1s"/>
                                 </line>
                             </g>
@@ -447,27 +451,23 @@
             <!-- Threat Assessment Block -->
             <div class="pipeline-block threat-assess" id="block5">
                 <div class="block-content">
-                    <div class="block-text">Eagle-1: "No threats detected"<br><span style="color:#FF00FF; font-size:12px;">In-Vehicle Display: Clear sector view confirmed</span></div>
+                    <div class="block-text">Eagle-1: "No threats detected"<br><span style="color:#00AAFF; font-size:12px;">In-Vehicle Display: Clear sector view confirmed</span></div>
                     <div class="block-icon">
                         <svg width="40" height="40" viewBox="0 0 40 40">
-                            <!-- AI Brain processing -->
-                            <circle cx="20" cy="20" r="12" fill="none" stroke="#FF0000" stroke-width="1.5"/>
-                            <circle cx="20" cy="20" r="12" fill="#FF0000" opacity="0.1"/>
-                            <!-- Neural network -->
-                            <g stroke="#FF0000" stroke-width="0.8" fill="none">
+                            <circle cx="20" cy="20" r="12" fill="none" stroke="#00DD88" stroke-width="1.5"/>
+                            <circle cx="20" cy="20" r="12" fill="#00DD88" opacity="0.1"/>
+                            <g stroke="#00DD88" stroke-width="0.8" fill="none">
                                 <circle cx="15" cy="15" r="2"/>
                                 <circle cx="25" cy="15" r="2"/>
                                 <circle cx="15" cy="25" r="2"/>
                                 <circle cx="25" cy="25" r="2"/>
                                 <circle cx="20" cy="20" r="2"/>
-                                <!-- Connections -->
                                 <line x1="15" y1="15" x2="20" y2="20"/>
                                 <line x1="25" y1="15" x2="20" y2="20"/>
                                 <line x1="15" y1="25" x2="20" y2="20"/>
                                 <line x1="25" y1="25" x2="20" y2="20"/>
                             </g>
-                            <!-- Pulsing analysis -->
-                            <circle cx="20" cy="20" r="8" fill="none" stroke="#FF0000" stroke-width="0.5" opacity="0.5">
+                            <circle cx="20" cy="20" r="8" fill="none" stroke="#00DD88" stroke-width="0.5" opacity="0.5">
                                 <animate attributeName="r" values="8;15;8" dur="2s" repeatCount="indefinite"/>
                                 <animate attributeName="opacity" values="0.5;0.1;0.5" dur="2s" repeatCount="indefinite"/>
                             </circle>
@@ -481,22 +481,19 @@
             <!-- Return Flight Block -->
             <div class="pipeline-block return-flight" id="block6">
                 <div class="block-content">
-                    <div class="block-text">Eagle-1: "Returning to base"<br><span style="color:#FF00FF; font-size:12px;">In-Vehicle Display: Return flight camera view</span></div>
+                    <div class="block-text">Eagle-1: "Returning to base"<br><span style="color:#00AAFF; font-size:12px;">In-Vehicle Display: Return flight camera view</span></div>
                     <div class="block-icon">
                         <svg width="40" height="40" viewBox="0 0 40 40">
-                            <!-- Return flight path -->
-                            <path d="M 35 10 Q 25 15 15 12 Q 10 18 5 25" stroke="#00FFFF" stroke-width="2" fill="none" stroke-dasharray="3,2"/>
-                            <!-- Returning drone -->
+                            <path d="M 35 10 Q 25 15 15 12 Q 10 18 5 25" stroke="#00AAFF" stroke-width="2" fill="none" stroke-dasharray="3,2"/>
                             <g>
                                 <animateTransform attributeName="transform" type="translate" values="35,10;25,12;15,12;5,25" dur="3s" repeatCount="indefinite"/>
-                                <ellipse cx="0" cy="0" rx="3" ry="1.5" fill="#00FFFF" opacity="0.7"/>
-                                <circle cx="-2" cy="-1" r="0.8" fill="none" stroke="#00FFFF" stroke-width="0.3"/>
-                                <circle cx="2" cy="-1" r="0.8" fill="none" stroke="#00FFFF" stroke-width="0.3"/>
-                                <circle cx="-2" cy="1" r="0.8" fill="none" stroke="#00FFFF" stroke-width="0.3"/>
-                                <circle cx="2" cy="1" r="0.8" fill="none" stroke="#00FFFF" stroke-width="0.3"/>
+                                <ellipse cx="0" cy="0" rx="3" ry="1.5" fill="#00AAFF" opacity="0.7"/>
+                                <circle cx="-2" cy="-1" r="0.8" fill="none" stroke="#00AAFF" stroke-width="0.3"/>
+                                <circle cx="2" cy="-1" r="0.8" fill="none" stroke="#00AAFF" stroke-width="0.3"/>
+                                <circle cx="-2" cy="1" r="0.8" fill="none" stroke="#00AAFF" stroke-width="0.3"/>
+                                <circle cx="2" cy="1" r="0.8" fill="none" stroke="#00AAFF" stroke-width="0.3"/>
                             </g>
-                            <!-- Landing pad -->
-                            <rect x="2" y="25" width="6" height="2" rx="1" fill="#00FFFF" opacity="0.3"/>
+                            <rect x="2" y="25" width="6" height="2" rx="1" fill="#00AAFF" opacity="0.3"/>
                         </svg>
                     </div>
                 </div>
@@ -507,26 +504,23 @@
             <!-- Voice Report Block -->
             <div class="pipeline-block voice-report" id="block7">
                 <div class="block-content">
-                    <div class="block-text">Eagle-1: "Landing sequence, docked to vehicle"<br><span style="color:#FF00FF; font-size:12px;">In-Vehicle Display: Landing camera view</span></div>
+                    <div class="block-text">Eagle-1: "Landing sequence, docked to vehicle"<br><span style="color:#00AAFF; font-size:12px;">In-Vehicle Display: Landing camera view</span></div>
                     <div class="block-icon">
                         <svg width="40" height="40" viewBox="0 0 40 40">
-                            <!-- Speaker/voice output -->
-                            <rect x="12" y="16" width="6" height="8" rx="1" fill="none" stroke="#9900FF" stroke-width="1.5"/>
-                            <rect x="12" y="16" width="6" height="8" rx="1" fill="#9900FF" opacity="0.2"/>
-                            <path d="M 18 18 L 22 15 L 22 25 L 18 22" fill="none" stroke="#9900FF" stroke-width="1.5"/>
-                            <!-- Sound waves -->
+                            <rect x="12" y="16" width="6" height="8" rx="1" fill="none" stroke="#5555FF" stroke-width="1.5"/>
+                            <rect x="12" y="16" width="6" height="8" rx="1" fill="#5555FF" opacity="0.2"/>
+                            <path d="M 18 18 L 22 15 L 22 25 L 18 22" fill="none" stroke="#5555FF" stroke-width="1.5"/>
                             <g opacity="0.8">
-                                <path d="M 24 16 Q 28 20 24 24" stroke="#9900FF" stroke-width="1" fill="none">
+                                <path d="M 24 16 Q 28 20 24 24" stroke="#5555FF" stroke-width="1" fill="none">
                                     <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
                                 </path>
-                                <path d="M 26 14 Q 32 20 26 26" stroke="#9900FF" stroke-width="1" fill="none">
+                                <path d="M 26 14 Q 32 20 26 26" stroke="#5555FF" stroke-width="1" fill="none">
                                     <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" begin="0.3s"/>
                                 </path>
-                                <path d="M 28 12 Q 36 20 28 28" stroke="#9900FF" stroke-width="1" fill="none">
+                                <path d="M 28 12 Q 36 20 28 28" stroke="#5555FF" stroke-width="1" fill="none">
                                     <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" begin="0.6s"/>
                                 </path>
                             </g>
-                            <!-- Checkmark -->
                             <path d="M 8 20 L 10 22 L 14 18" stroke="#00FF00" stroke-width="2" fill="none"/>
                         </svg>
                     </div>
@@ -568,20 +562,20 @@
             { name: "Mission Report Generation", duration: 3000, systems: ["mission-ai"] }
         ];
 
-        const aiSystems = [
-            "speech-recognition", "flight-control", "collision-avoidance", 
-            "navigation", "video-streaming", "computer-vision", "object-detection", 
-            "threat-classification", "motion-tracking", "return-nav", "autonomous-landing", "mission-ai"
-        ];
-
         let currentStage = 0;
-        let startTime = Date.now();
 
         function activateStage(stageIndex) {
             // Activate current block
             const currentBlock = document.getElementById(`block${stageIndex + 1}`);
             if (currentBlock) {
                 currentBlock.classList.add('active');
+                
+                // Auto-scroll to current block
+                currentBlock.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                    inline: 'center'
+                });
             }
             
             // Activate connection arrow
