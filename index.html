@@ -261,6 +261,7 @@
         .ai-item {
             color: #666;
             transition: color 0.3s ease;
+            font-size: 11px;
         }
 
         .ai-item.active {
@@ -341,7 +342,6 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="title">DRONE RECONNAISSANCE AI WORKFLOW</div>
             <div class="subtitle">Voice-Controlled Autonomous Threat Assessment</div>
         </div>
 
@@ -601,36 +601,49 @@
         }
 
         function runWorkflow() {
-            let totalDelay = 0;
-            
-            stages.forEach((stage, index) => {
-                setTimeout(() => {
-                    activateStage(index);
-                    currentStage = index;
-                }, totalDelay);
-                totalDelay += stage.duration;
-            });
-            
-            // Restart the workflow after completion
-            setTimeout(() => {
-                // Reset all states
-                document.querySelectorAll('.pipeline-block').forEach(block => {
-                    block.classList.remove('active');
-                });
-                document.querySelectorAll('.connection-arrow').forEach(arrow => {
-                    arrow.classList.remove('active');
-                });
-                document.querySelectorAll('.ai-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                
-                // Restart workflow
-                setTimeout(() => runWorkflow(), 2000);
-            }, totalDelay + 3000);
+            // This function is now disabled to prevent auto-highlighting
+            // Workflow will remain static with no automatic progression
         }
 
-        // Start the workflow
-        runWorkflow();
+        // Set sequential highlighting to show progression
+        function setSequentialHighlighting() {
+            let currentStage = 0;
+            const totalStages = 7;
+            
+            function highlightNextStage() {
+                if (currentStage < totalStages) {
+                    // Activate current block
+                    const block = document.getElementById(`block${currentStage + 1}`);
+                    if (block) block.classList.add('active');
+                    
+                    // Activate connection arrow
+                    const arrow = document.getElementById(`arrow${currentStage + 1}`);
+                    if (arrow) arrow.classList.add('active');
+                    
+                    // Activate AI systems for this stage
+                    const stage = stages[currentStage];
+                    if (stage && stage.systems) {
+                        stage.systems.forEach(systemId => {
+                            const aiSystem = document.getElementById(systemId);
+                            if (aiSystem) aiSystem.classList.add('active');
+                        });
+                    }
+                    
+                    currentStage++;
+                    
+                    // Continue to next stage after delay
+                    if (currentStage < totalStages) {
+                        setTimeout(highlightNextStage, 2000); // 2 second delay between stages
+                    }
+                }
+            }
+            
+            // Start the sequential highlighting
+            highlightNextStage();
+        }
+
+        // Initialize sequential highlighting
+        setSequentialHighlighting();
     </script>
 </body>
 </html>
