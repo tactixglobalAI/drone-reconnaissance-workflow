@@ -605,8 +605,33 @@
             // Workflow will remain static with no automatic progression
         }
 
-        // Set sequential highlighting to show progression
-        function setSequentialHighlighting() {
+        // Auto-scroll and sequential highlighting when visible
+        function initializeWorkflowDemo() {
+            let hasStarted = false;
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !hasStarted) {
+                        hasStarted = true;
+                        setTimeout(startSequentialHighlighting, 1000);
+                    }
+                });
+            }, { 
+                threshold: 0.2,
+                rootMargin: '0px 0px -100px 0px'
+            });
+            
+            // Observe the header element
+            const headerElement = document.querySelector('.header');
+            if (headerElement) {
+                observer.observe(headerElement);
+            } else {
+                // Fallback: start immediately
+                setTimeout(startSequentialHighlighting, 2000);
+            }
+        }
+        
+        function startSequentialHighlighting() {
             let currentStage = 0;
             const totalStages = 7;
             
@@ -614,7 +639,15 @@
                 if (currentStage < totalStages) {
                     // Activate current block
                     const block = document.getElementById(`block${currentStage + 1}`);
-                    if (block) block.classList.add('active');
+                    if (block) {
+                        block.classList.add('active');
+                        // Scroll to keep active block visible
+                        block.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center',
+                            inline: 'center'
+                        });
+                    }
                     
                     // Activate connection arrow
                     const arrow = document.getElementById(`arrow${currentStage + 1}`);
@@ -633,7 +666,7 @@
                     
                     // Continue to next stage after delay
                     if (currentStage < totalStages) {
-                        setTimeout(highlightNextStage, 2000); // 2 second delay between stages
+                        setTimeout(highlightNextStage, 2500);
                     }
                 }
             }
@@ -642,8 +675,8 @@
             highlightNextStage();
         }
 
-        // Initialize sequential highlighting
-        setSequentialHighlighting();
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeWorkflowDemo);
     </script>
 </body>
 </html>
