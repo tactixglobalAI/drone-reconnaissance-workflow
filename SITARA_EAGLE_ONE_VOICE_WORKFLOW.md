@@ -1,14 +1,19 @@
-# SITARA — Eagle One Voice Workflow
+# SITARA — Eagle One Voice Workflow (Non-US)
 
-**Version:** 1.0.0  
+**Version:** 1.0.1  
 **Date:** October 14, 2026  
 **Status:** Proposed interaction specification  
 **Owner:** TactixGlobal
+
+**Market:** Non-US  
+**Default spoken/display units:** Meters  
+**US counterpart:** [STELLA](STELLA_EAGLE_ONE_VOICE_WORKFLOW_US.md)
 
 ## Version history
 
 | Version | Date | Changes |
 |---|---|---|
+| 1.0.1 | 2026-10-14 | Designated SITARA as the non-US edition; linked STELLA US edition. Existing interaction behavior preserved. |
 | 1.0.0 | 2026-10-14 | Initial voice workflow for tethered Eagle One: deployment, camera interaction, clarification, evidence sharing, exceptions, and recovery. |
 
 Update this document in place so its shareable link remains stable. Record each revision above and in a Git commit. Use major versions for incompatible interaction changes, minor versions for added workflows, and patch versions for clarifications.
@@ -128,6 +133,10 @@ After verified landing and disarming:
 **Sitara:** “Eagle One landed.”
 
 Recording closes, evidence is preserved, and the mission log is saved automatically.
+
+## Regional consistency
+
+SITARA and STELLA are regional identities for the same intended interaction model. Review shared behavior changes across both editions. Preserve explicit unit requests and clarify ambiguous units; heights in this example remain relative to the ground station.
 
 ## Developer rules
 
